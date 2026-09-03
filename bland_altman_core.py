@@ -302,8 +302,9 @@ def process_csv(input_path: str, output_path: str) -> Dict[str, Any]:
         rows = list(reader)
 
     # Find method columns
-    method1_col = _find_col(fieldnames, ["method1", "m1", "test", "new", "device1", "v1"])
-    method2_col = _find_col(fieldnames, ["method2", "m2", "reference", "gold", "device2", "v2"])
+    method1_col = _find_col(fieldnames, ["method1", "m1", "method_a", "methoda", "test", "new", "device1", "v1", "invasive_arterial_bp", "lab_reference"])
+    method2_col = _find_col(fieldnames, ["method2", "m2", "method_b", "methodb", "reference", "gold", "device2", "v2", "noninvasive_cuff_bp", "poc_capillary"])
+    subject_col = _find_col(fieldnames, ["subject", "subject_id", "patient_id", "id", "sample"])
 
     method1 = [float(r[method1_col]) for r in rows]
     method2 = [float(r[method2_col]) for r in rows]
@@ -316,8 +317,9 @@ def process_csv(input_path: str, output_path: str) -> Dict[str, Any]:
     out_rows = []
     lower, upper = result["limits_of_agreement"]
     for i, r in enumerate(rows):
+        subj_val = r.get(subject_col, str(i + 1)) if subject_col in r else str(i + 1)
         out_rows.append({
-            "subject": str(i),
+            "subject": str(subj_val),
             "method1": str(method1[i]),
             "method2": str(method2[i]),
             "difference": str(round(result["differences"][i], 6)),

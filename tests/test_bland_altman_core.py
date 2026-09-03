@@ -133,7 +133,7 @@ class TestLimitsOfAgreement:
     def test_loa_convenience_function(self):
         """Test the convenience function."""
         m1 = [10.0, 12.0, 14.0]
-        m2 = [9.0, 11.0, 13.0]
+        m2 = [9.0, 11.5, 13.0]
         lo, hi = limits_of_agreement(m1, m2)
         assert lo < hi
 
